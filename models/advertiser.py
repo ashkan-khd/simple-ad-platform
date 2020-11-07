@@ -26,7 +26,7 @@ class Advertiser(BaseModel):
     __views: int = 0
 
     def __init__(self) -> None:
-        super().__init__((Advertiser.__objects[-1]._id + 1 if len(Advertiser.__objects) != 0 else 1))
+        super().__init__(Advertiser.__objects)
         Advertiser.__objects.append(self)
 
     def get_name(self) -> str:
