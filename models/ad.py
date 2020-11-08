@@ -45,6 +45,9 @@ class Ad(BaseAdvertising, BaseModel):
     def set_advertiser(self, advertiser: Advertiser):
         self.__advertiser = ForeignKey(advertiser.get_id(), Advertiser)
 
+    def describe_me(self) -> str:
+        return "Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser."
+
     def inc_clicks(self):
         super(Ad, self).inc_clicks()
         self.__advertiser.object().inc_clicks()
@@ -52,6 +55,3 @@ class Ad(BaseAdvertising, BaseModel):
     def inc_views(self):
         super(Ad, self).inc_views()
         self.__advertiser.object().inc_views()
-
-    def describe_me(self) -> str:
-        return "Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser."

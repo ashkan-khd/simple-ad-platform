@@ -33,5 +33,16 @@ class TestAd(unittest.TestCase):
         ad3 = self.create_advertiser_ad(advertiser, 30, 10)
         self.assertEqual(ad1.get_clicks() + ad2.get_clicks() + ad3.get_clicks(), advertiser.get_clicks())
         self.assertEqual(ad1.get_views() + ad2.get_views() + ad3.get_views(), advertiser.get_views())
+        Advertiser.get_objects().clear()
+        Ad.get_objects().clear()
 
+    def test_advertisers_total_clicks(self):
+        advertiser1 = Advertiser()
+        ad1 = self.create_advertiser_ad(advertiser1, 20, 0)
+        ad2 = self.create_advertiser_ad(advertiser1, 30, 0)
+        advertiser2 = Advertiser()
+        ad3 = self.create_advertiser_ad(advertiser2, 10, 0)
+        ad4 = self.create_advertiser_ad(advertiser2, 40, 0)
+        self.assertEqual(advertiser1.get_clicks(), advertiser2.get_clicks())
+        self.assertEqual(100, Advertiser.get_total_clicks())
 

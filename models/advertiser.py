@@ -20,7 +20,7 @@ class Advertiser(BaseAdvertising, BaseModel):
             return 0
         return reduce\
             (lambda cl1, cl2: cl1 + cl2,
-             list(map(lambda advertiser: advertiser._clicks, Advertiser.__objects)))
+             list(map(lambda advertiser: advertiser.get_clicks(), Advertiser.__objects)))
 
     __name: str = ''
 
