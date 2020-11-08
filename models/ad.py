@@ -21,8 +21,12 @@ class Ad(BaseAdvertising, BaseModel):
     __view: int = ''
     __advertiser: ForeignKey = None
 
-    def __init__(self) -> None:
+    def __init__(self, title: str = '', image_url: str = '', link: str = '', advertiser: Advertiser = None) -> None:
         super().__init__(Ad.__objects)
+        self.__title = title
+        self.__image_url = image_url
+        self.__link = link
+        self.set_advertiser(advertiser)
 
     def get_title(self) -> str:
         return self.__title
@@ -43,10 +47,13 @@ class Ad(BaseAdvertising, BaseModel):
         self.__link = link
 
     def set_advertiser(self, advertiser: Advertiser):
+        if advertiser is None:
+            self.__advertiser = None
+            return
         self.__advertiser = ForeignKey(advertiser.get_id(), Advertiser)
 
-    def describe_me(self) -> str:
-        return "Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser."
+    def describe_me(self):
+        print("Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser.")
 
     def inc_clicks(self):
         super(Ad, self).inc_clicks()

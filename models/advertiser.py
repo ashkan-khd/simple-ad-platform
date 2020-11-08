@@ -18,15 +18,16 @@ class Advertiser(BaseAdvertising, BaseModel):
     def get_total_clicks() -> int:
         if len(Advertiser.__objects) == 0:
             return 0
-        return reduce\
+        return reduce \
             (lambda cl1, cl2: cl1 + cl2,
              list(map(lambda advertiser: advertiser.get_clicks(), Advertiser.__objects)))
 
     __name: str = ''
 
-    def __init__(self) -> None:
+    def __init__(self, name: str = '') -> None:
         super().__init__(Advertiser.__objects)
         Advertiser.__objects.append(self)
+        self.__name = name
 
     def get_name(self) -> str:
         return self.__name
@@ -34,9 +35,9 @@ class Advertiser(BaseAdvertising, BaseModel):
     def set_name(self, name: str):
         self.__name = name
 
-    def describe_me(self) -> str:
-        return "Advertiser extends BaseAdvertising and BaseModel contains all the necessary fields for an advertiser " \
-               "entity."
+    def describe_me(self):
+        print("Advertiser extends BaseAdvertising and BaseModel contains all the necessary fields for an advertiser "
+              "entity.")
 
     @classmethod
     def help(cls) -> str:

@@ -18,5 +18,5 @@ class BaseAdvertising(ABC):
         self._views += 1
 
     @abstractmethod
-    def describe_me(self) -> str:
+    def describe_me(self):
         pass
