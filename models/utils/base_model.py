@@ -1,19 +1,25 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Dict
 
 
 class BaseModel(ABC):
     __id: int = -1
 
-    def __init__(self, objects: list) -> None:
-        self.__id = (objects[-1].__id + 1 if len(objects) != 0 else 1)
+    def __init__(self) -> None:
+        self.__id = self._get_next_ind
 
     @staticmethod
     @abstractmethod
-    def get_objects() -> List[BaseModel]:
+    def get_objects() -> Dict[int, BaseModel]:
         pass
 
-    def get_id(self) -> int:
+    @property
+    def id(self) -> int:
         return self.__id
+
+    @property
+    @abstractmethod
+    def _get_next_ind(self):
+        pass

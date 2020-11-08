@@ -10,6 +10,4 @@ class ForeignKey:
         self.__id = id
 
     def object(self) -> BaseModel:
-        for obj in self.__model.get_objects():
-            if obj.get_id() == self.__id:
-                return obj
+        return self.__model.get_objects()[self.__id]

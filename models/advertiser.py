@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 from functools import reduce
-from typing import List
+from typing import Dict
 
 from models import BaseAdvertising
 from models.utils import BaseModel
 
 
 class Advertiser(BaseAdvertising, BaseModel):
-    __objects: List[Advertiser] = []
+    __objects: Dict[int, Advertiser] = {}
+    __next_ind = 1
 
     @staticmethod
-    def get_objects() -> List[Advertiser]:
+    def get_objects() -> Dict[int, Advertiser]:
         return Advertiser.__objects
 
     @staticmethod
@@ -20,13 +21,14 @@ class Advertiser(BaseAdvertising, BaseModel):
             return 0
         return reduce \
             (lambda cl1, cl2: cl1 + cl2,
-             list(map(lambda advertiser: advertiser.get_clicks(), Advertiser.__objects)))
+             list(map(lambda advertiser_id: Advertiser.__objects[advertiser_id].get_clicks(), Advertiser.__objects)))
 
     __name: str = ''
 
     def __init__(self, name: str = '') -> None:
-        super().__init__(Advertiser.__objects)
-        Advertiser.__objects.append(self)
+        super().__init__()
+        Advertiser.__objects[self.id] = self
+        Advertiser.__next_ind += 1
         self.__name = name
 
     def get_name(self) -> str:
@@ -38,6 +40,10 @@ class Advertiser(BaseAdvertising, BaseModel):
     def describe_me(self):
         print("Advertiser extends BaseAdvertising and BaseModel contains all the necessary fields for an advertiser "
               "entity.")
+
+    @property
+    def _get_next_ind(self):
+        return Advertiser.__next_ind
 
     @classmethod
     def help(cls) -> str:

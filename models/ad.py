@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Dict
 
 from models import Advertiser, BaseAdvertising
 from models.utils import BaseModel, ForeignKey
@@ -8,10 +8,11 @@ from models.utils import BaseModel, ForeignKey
 
 class Ad(BaseAdvertising, BaseModel):
 
-    __objects: List[Ad] = []
+    __objects: Dict[int, Ad] = {}
+    __next_ind = 1
 
     @staticmethod
-    def get_objects() -> List[Ad]:
+    def get_objects() -> Dict[int, Ad]:
         return Ad.__objects
 
     __title: str = ''
@@ -22,7 +23,9 @@ class Ad(BaseAdvertising, BaseModel):
     __advertiser: ForeignKey = None
 
     def __init__(self, title: str = '', image_url: str = '', link: str = '', advertiser: Advertiser = None) -> None:
-        super().__init__(Ad.__objects)
+        super().__init__()
+        Ad.__objects[self.id] = self
+        Ad.__next_ind += 1
         self.__title = title
         self.__image_url = image_url
         self.__link = link
@@ -50,7 +53,11 @@ class Ad(BaseAdvertising, BaseModel):
         if advertiser is None:
             self.__advertiser = None
             return
-        self.__advertiser = ForeignKey(advertiser.get_id(), Advertiser)
+        self.__advertiser = ForeignKey(advertiser.id, Advertiser)
+
+    @property
+    def _get_next_ind(self):
+        return Ad.__next_ind
 
     def describe_me(self):
         print("Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser.")
