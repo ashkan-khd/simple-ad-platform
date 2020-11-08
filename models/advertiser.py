@@ -3,7 +3,8 @@ from __future__ import annotations
 from functools import reduce
 from typing import List
 
-from models import BaseModel, BaseAdvertising
+from models import BaseAdvertising
+from models.utils import BaseModel
 
 
 class Advertiser(BaseAdvertising, BaseModel):

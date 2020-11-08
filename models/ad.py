@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import List
 
-from models import BaseModel, ForeignKey, Advertiser, BaseAdvertising
+from models import Advertiser, BaseAdvertising
+from models.utils import BaseModel, ForeignKey
 
 
 class Ad(BaseAdvertising, BaseModel):

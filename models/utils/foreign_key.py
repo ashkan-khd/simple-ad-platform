@@ -1,5 +1,4 @@
-from models import BaseModel
-
+from models.utils import BaseModel
 
 class ForeignKey:
     __model: BaseModel = None
