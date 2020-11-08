@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class BaseAdvertising(ABC):
@@ -16,3 +16,7 @@ class BaseAdvertising(ABC):
 
     def inc_views(self):
         self._views += 1
+
+    @abstractmethod
+    def describe_me(self) -> str:
+        pass

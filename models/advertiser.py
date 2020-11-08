@@ -33,6 +33,10 @@ class Advertiser(BaseAdvertising, BaseModel):
     def set_name(self, name: str):
         self.__name = name
 
+    def describe_me(self) -> str:
+        return "Advertiser extends BaseAdvertising and BaseModel contains all the necessary fields for an advertiser " \
+               "entity."
+
     @classmethod
     def help(cls) -> str:
         return 'Advertiser: \n' \

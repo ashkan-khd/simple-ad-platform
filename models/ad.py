@@ -6,6 +6,7 @@ from models import BaseModel, ForeignKey, Advertiser, BaseAdvertising
 
 
 class Ad(BaseAdvertising, BaseModel):
+
     __objects: List[Ad] = []
 
     @staticmethod
@@ -50,3 +51,6 @@ class Ad(BaseAdvertising, BaseModel):
     def inc_views(self):
         super(Ad, self).inc_views()
         self.__advertiser.object().inc_views()
+
+    def describe_me(self) -> str:
+        return "Ad entity holds necessary fields for an advertisement and it also has a foreign key to its advertiser."

@@ -24,7 +24,7 @@ class TestAd(unittest.TestCase):
         TestAd.add_views(ad, init_views)
         return ad
 
-    def test_inc_clicks(self):
+    def test_inc(self):
         advertiser = Advertiser()
         ad1 = self.create_advertiser_ad(advertiser, 20, 10)
         self.assertEqual(20, ad1.get_clicks())
