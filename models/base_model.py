@@ -10,8 +10,8 @@ class BaseModel(ABC):
     def __init__(self, objects: list) -> None:
         self.__id = (objects[-1].__id + 1 if len(objects) != 0 else 1)
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def get_objects() -> List[BaseModel]:
         pass
 
