@@ -3,18 +3,19 @@ from __future__ import annotations
 from functools import reduce
 from typing import List
 
-from models import BaseModel
+from models import BaseModel, BaseAdvertising
 
 
-class Advertiser(BaseModel):
+class Advertiser(BaseAdvertising, BaseModel):
+
     __objects: List[Advertiser] = []
 
     @staticmethod
-    def get_objects():
+    def get_objects() -> List[Advertiser]:
         return Advertiser.__objects
 
     @staticmethod
-    def get_total_clicks():
+    def get_total_clicks() -> int:
         if len(Advertiser.__objects) == 0:
             return 0
         return reduce\
@@ -22,8 +23,6 @@ class Advertiser(BaseModel):
              list(map(lambda advertiser: advertiser.__clicks, Advertiser.__objects)))
 
     __name: str = ''
-    __clicks: int = 0
-    __views: int = 0
 
     def __init__(self) -> None:
         super().__init__(Advertiser.__objects)
@@ -34,18 +33,6 @@ class Advertiser(BaseModel):
 
     def set_name(self, name: str):
         self.__name = name
-
-    def get_clicks(self) -> int:
-        return self.__clicks
-
-    def get_views(self) -> int:
-        return self.__views
-
-    def inc_clicks(self):
-        self.__clicks += 1
-
-    def inc_views(self):
-        self.__views += 1
 
     @classmethod
     def help(cls) -> str:
