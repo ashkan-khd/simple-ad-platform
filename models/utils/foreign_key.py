@@ -1,5 +1,6 @@
 from models.utils import BaseModel
 
+
 class ForeignKey:
     __model: BaseModel = None
     __id: int = -1
@@ -12,4 +13,3 @@ class ForeignKey:
         for obj in self.__model.get_objects():
             if obj.get_id() == self.__id:
                 return obj
-
