@@ -1,10 +1,16 @@
 import unittest
+from functools import reduce
 
 from models import Advertiser
 from models.ad import Ad
 
 
 class TestAd(unittest.TestCase):
+
+    @staticmethod
+    def re_init_models():
+        Advertiser.get_objects().clear()
+        Ad.get_objects().clear()
 
     @staticmethod
     def add_clicks(ad: Ad, clicks: int):
@@ -24,25 +30,42 @@ class TestAd(unittest.TestCase):
         TestAd.add_views(ad, init_views)
         return ad
 
-    def test_inc(self):
+    @staticmethod
+    def create_ads_from_clicks_list(advertiser, clicks_list):
+        for click in clicks_list:
+            TestAd.create_advertiser_ad(advertiser, click, 0)
+
+    @staticmethod
+    def create_ads_from_views_list(advertiser, views_list):
+        for view in views_list:
+            TestAd.create_advertiser_ad(advertiser, 0, view)
+
+    def test_inc_clicks(self):
+        self.re_init_models()
+
         advertiser = Advertiser()
-        ad1 = self.create_advertiser_ad(advertiser, 20, 10)
-        self.assertEqual(20, ad1.get_clicks())
-        self.assertEqual(10, ad1.get_views())
-        ad2 = self.create_advertiser_ad(advertiser, 15, 5)
-        ad3 = self.create_advertiser_ad(advertiser, 30, 10)
-        self.assertEqual(ad1.get_clicks() + ad2.get_clicks() + ad3.get_clicks(), advertiser.get_clicks())
-        self.assertEqual(ad1.get_views() + ad2.get_views() + ad3.get_views(), advertiser.get_views())
-        Advertiser.get_objects().clear()
-        Ad.get_objects().clear()
+        clicks = [20, 15, 30]
+        self.create_ads_from_clicks_list(advertiser, clicks)
+
+        self.assertEqual(reduce(lambda x, y: x + y, clicks), advertiser.get_clicks())
+
+    def test_inc_views(self):
+        self.re_init_models()
+
+        advertiser = Advertiser()
+        views = [40, 50, 10]
+        self.create_ads_from_views_list(advertiser, views)
+
+        self.assertEqual(reduce(lambda x, y: x + y, views), advertiser.get_views())
 
     def test_advertisers_total_clicks(self):
-        advertiser1 = Advertiser()
-        ad1 = self.create_advertiser_ad(advertiser1, 20, 0)
-        ad2 = self.create_advertiser_ad(advertiser1, 30, 0)
-        advertiser2 = Advertiser()
-        ad3 = self.create_advertiser_ad(advertiser2, 10, 0)
-        ad4 = self.create_advertiser_ad(advertiser2, 40, 0)
-        self.assertEqual(advertiser1.get_clicks(), advertiser2.get_clicks())
-        self.assertEqual(100, Advertiser.get_total_clicks())
+        self.re_init_models()
 
+        advertiser1_clicks = [20, 10, 15, 60]
+        self.create_ads_from_clicks_list(Advertiser(), advertiser1_clicks)
+
+        advertiser2_clicks = [25, 5, 35, 40]
+        self.create_ads_from_clicks_list(Advertiser(), advertiser2_clicks)
+
+        self.assertEqual(reduce(lambda x, y: x + y, advertiser1_clicks + advertiser2_clicks),
+                         Advertiser.get_total_clicks())

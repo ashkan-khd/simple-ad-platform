@@ -1,4 +1,5 @@
 import unittest
+from functools import reduce
 
 from models import Advertiser
 
@@ -6,18 +7,25 @@ from models import Advertiser
 class TestAdvertiser(unittest.TestCase):
 
     @staticmethod
+    def re_init_models():
+        Advertiser.get_objects().clear()
+
+    @staticmethod
     def add_clicks(advertiser: Advertiser, clicks: int):
         for i in range(clicks):
             advertiser.inc_clicks()
 
     def test_get_total_clicks(self):
-        self.add_clicks(Advertiser(), 20)
-        self.add_clicks(Advertiser(), 42)
-        self.add_clicks(Advertiser(), 23)
-        self.assertEqual(20 + 42 + 23, Advertiser.get_total_clicks())
+        self.re_init_models()
+        clicks_list = [20, 42, 33, 14, 55]
+        for clicks in clicks_list:
+            self.add_clicks(Advertiser(), clicks)
+
+        self.assertEqual(reduce(lambda x, y: x + y, clicks_list), Advertiser.get_total_clicks())
         Advertiser.get_objects().clear()
 
     def test_id_inc(self):
+        self.re_init_models()
         try:
             Advertiser()
             advertisers = Advertiser.get_objects()
