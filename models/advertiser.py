@@ -9,7 +9,6 @@ from models.utils import BaseModel
 
 class Advertiser(BaseAdvertising, BaseModel):
     __objects: Dict[int, Advertiser] = {}
-    __next_ind = 1
 
     @staticmethod
     def get_objects() -> Dict[int, Advertiser]:
@@ -26,9 +25,8 @@ class Advertiser(BaseAdvertising, BaseModel):
     __name: str = ''
 
     def __init__(self, name: str = '') -> None:
-        super().__init__()
+        super().__init__(Advertiser)
         Advertiser.__objects[self.id] = self
-        Advertiser.__next_ind += 1
         self.__name = name
 
     def get_name(self) -> str:
@@ -40,10 +38,6 @@ class Advertiser(BaseAdvertising, BaseModel):
     def describe_me(self):
         print("Advertiser extends BaseAdvertising and BaseModel contains all the necessary fields for an advertiser "
               "entity.")
-
-    @property
-    def _get_next_ind(self):
-        return Advertiser.__next_ind
 
     @classmethod
     def help(cls) -> str:

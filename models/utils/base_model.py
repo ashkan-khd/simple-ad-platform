@@ -6,9 +6,11 @@ from typing import Dict
 
 class BaseModel(ABC):
     __id: int = -1
+    _next_ind = 1
 
-    def __init__(self) -> None:
-        self.__id = self._get_next_ind
+    def __init__(self, model: BaseModel) -> None:
+        self.__id = model._next_ind
+        model._next_ind += 1
 
     @staticmethod
     @abstractmethod
@@ -18,8 +20,3 @@ class BaseModel(ABC):
     @property
     def id(self) -> int:
         return self.__id
-
-    @property
-    @abstractmethod
-    def _get_next_ind(self):
-        pass
