@@ -1,5 +1,4 @@
 import unittest
-from functools import reduce
 
 from models import Advertiser
 from models.ad import Ad
@@ -47,7 +46,7 @@ class TestAd(unittest.TestCase):
         clicks = [20, 15, 30]
         self.create_ads_from_clicks_list(advertiser, clicks)
 
-        self.assertEqual(reduce(lambda x, y: x + y, clicks), advertiser.get_clicks())
+        self.assertEqual(sum(clicks), advertiser.get_clicks())
 
     def test_inc_views(self):
         self.re_init_models()
@@ -56,7 +55,7 @@ class TestAd(unittest.TestCase):
         views = [40, 50, 10]
         self.create_ads_from_views_list(advertiser, views)
 
-        self.assertEqual(reduce(lambda x, y: x + y, views), advertiser.get_views())
+        self.assertEqual(sum(views), advertiser.get_views())
 
     def test_advertisers_total_clicks(self):
         self.re_init_models()
@@ -67,5 +66,14 @@ class TestAd(unittest.TestCase):
         advertiser2_clicks = [25, 5, 35, 40]
         self.create_ads_from_clicks_list(Advertiser(), advertiser2_clicks)
 
-        self.assertEqual(reduce(lambda x, y: x + y, advertiser1_clicks + advertiser2_clicks),
+        self.assertEqual(sum(advertiser1_clicks + advertiser2_clicks),
                          Advertiser.get_total_clicks())
+
+    def test_delete_fk(self):
+        advertiser = Advertiser(name='hello')
+        my_ad = Ad(advertiser=advertiser)
+        Advertiser.get_objects().clear()
+        try:
+            my_ad.inc_clicks()
+        except Exception:
+            self.fail('failed to increase because of loss of fk')

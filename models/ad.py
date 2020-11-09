@@ -20,7 +20,7 @@ class Ad(BaseAdvertising, BaseModel):
     __advertiser: ForeignKey = None
 
     def __init__(self, title: str = '', image_url: str = '', link: str = '', advertiser: Advertiser = None) -> None:
-        super().__init__(Ad)
+        super().__init__()
         Ad.__objects[self.id] = self
         self.__title = title
         self.__image_url = image_url

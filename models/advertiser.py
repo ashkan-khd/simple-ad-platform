@@ -25,7 +25,7 @@ class Advertiser(BaseAdvertising, BaseModel):
     __name: str = ''
 
     def __init__(self, name: str = '') -> None:
-        super().__init__(Advertiser)
+        super().__init__()
         Advertiser.__objects[self.id] = self
         self.__name = name
 

@@ -8,9 +8,10 @@ class BaseModel(ABC):
     __id: int = -1
     _next_ind = 1
 
-    def __init__(self, model: BaseModel) -> None:
-        self.__id = model._next_ind
-        model._next_ind += 1
+    def __init__(self) -> None:
+        self.__id = self.__class__._next_ind
+        self.__class__._next_ind += 1
+
 
     @staticmethod
     @abstractmethod
