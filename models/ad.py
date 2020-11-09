@@ -18,8 +18,6 @@ class Ad(BaseAdvertising, BaseModel):
     __title: str = ''
     __image_url: str = ''
     __link: str = ''
-    __clicks: int = ''
-    __view: int = ''
     __advertiser: ForeignKey = None
 
     def __init__(self, title: str = '', image_url: str = '', link: str = '', advertiser: Advertiser = None) -> None:
